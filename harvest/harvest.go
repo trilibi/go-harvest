@@ -90,17 +90,24 @@ type PageLinks struct {
 // must be a struct whose fields may contain "url" tags.
 func addOptions(s string, opt interface{}) (string, error) {
 	v := reflect.ValueOf(opt)
+	fmt.Println("-----")
+	fmt.Println(v)
 	if v.Kind() == reflect.Ptr && v.IsNil() {
+		fmt.Println(1)
 		return s, nil
 	}
 
 	u, err := url.Parse(s)
 	if err != nil {
+		fmt.Println(2)
 		return s, err
 	}
 
 	qs, err := query.Values(opt)
+	fmt.Println(qs)
+	fmt.Println(opt)
 	if err != nil {
+		fmt.Println(3)
 		return s, err
 	}
 
@@ -198,6 +205,8 @@ func (c *HarvestClient) Do(ctx context.Context, req *http.Request, v interface{}
 		}, err
 	}*/
 
+	fmt.Println(req.URL)
+
 	resp, err := c.client.Do(req)
 	if err != nil {
 		// If we got an error, and the context has been canceled,
@@ -235,6 +244,7 @@ func (c *HarvestClient) Do(ctx context.Context, req *http.Request, v interface{}
 		// in case the caller wants to inspect it further
 		return resp, err
 	}
+
 
 	if v != nil {
 		if w, ok := v.(io.Writer); ok {

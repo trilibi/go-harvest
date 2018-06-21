@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 	"net/http"
+	"strings"
 )
 
 // TimeEntryService handles communication with the issue related
@@ -15,23 +16,23 @@ type TimesheetService service
 
 type TimeEntry struct {
 	Id                *int64                 `json:"id,omitempty"`                 // Unique ID for the time entry.
-	SpentDate         *Date                  `json:"spent_date,omitempty"`         // Date of the time entry.
-	User              *User                  `json:"user,omitempty"`               // An object containing the id and name of the associated user.
-	UserAssignment    *ProjectUserAssignment `json:"user_assignment,omitempty"`    // A user assignment object of the associated user.
-	Client            *Client                `json:"client,omitempty"`             // An object containing the id and name of the associated client.
-	Project           *Project               `json:"project,omitempty"`            // An object containing the id and name of the associated project.
-	Task              *Task                  `json:"task,omitempty"`               // An object containing the id and name of the associated task.
-	TaskAssignment    *ProjectTaskAssignment `json:"task_assignment,omitempty"`    // A task assignment object of the associated task.
-	ExternalReference *ExternalReference     `json:"external_reference,omitempty"` // An object containing the id, group_id, permalink, service, and service_icon_url of the associated external reference.
-	Invoice           *Invoice               `json:"invoice,omitempty"`            // Once the time entry has been invoiced, this field will include the associated invoice’s id and number.
+	//SpentDate         *Date                  `json:"spent_date,omitempty"`         // Date of the time entry.
+	//User              *User                  `json:"user,omitempty"`               // An object containing the id and name of the associated user.
+	//UserAssignment    *ProjectUserAssignment `json:"user_assignment,omitempty"`    // A user assignment object of the associated user.
+	//Client            *Client                `json:"client,omitempty"`             // An object containing the id and name of the associated client.
+	//Project           *Project               `json:"project,omitempty"`            // An object containing the id and name of the associated project.
+	//Task              *Task                  `json:"task,omitempty"`               // An object containing the id and name of the associated task.
+	//TaskAssignment    *ProjectTaskAssignment `json:"task_assignment,omitempty"`    // A task assignment object of the associated task.
+	//ExternalReference *ExternalReference     `json:"external_reference,omitempty"` // An object containing the id, group_id, permalink, service, and service_icon_url of the associated external reference.
+	//Invoice           *Invoice               `json:"invoice,omitempty"`            // Once the time entry has been invoiced, this field will include the associated invoice’s id and number.
 	Hours             *float64               `json:"hours,omitempty"`              // Number of (decimal time) hours tracked in this time entry.
 	Notes             *string                `json:"notes,omitempty"`              // Notes attached to the time entry.
 	IsLocked          *bool                  `json:"is_locked,omitempty"`          // Whether or not the time entry has been locked.
 	LockedReason      *string                `json:"locked_reason,omitempty"`      // Why the time entry has been locked.
 	IsClosed          *bool                  `json:"is_closed,omitempty"`          // Whether or not the time entry has been approved via Timesheet Approval.
 	IsBilled          *bool                  `json:"is_billed,omitempty"`          // Whether or not the time entry has been marked as invoiced.
-	TimerStartedAt    *time.Time             `json:"timer_started_at,omitempty"`   // Date and time the timer was started (if tracking by duration).
-	StartedTime       *time.Time             `json:"started_time,omitempty"`       // Time the time entry was started (if tracking by start/end times).
+	//TimerStartedAt    *time.Time             `json:"timer_started_at,omitempty"`   // Date and time the timer was started (if tracking by duration).
+	//StartedTime       *time.Time             `json:"started_time,omitempty"`       // Time the time entry was started (if tracking by start/end times).
 	EndedTime         *time.Time             `json:"ended_time,omitempty"`         // Time the time entry was ended (if tracking by start/end times).
 	IsRunning         *bool                  `json:"is_running,omitempty"`         // Whether or not the time entry is currently running.
 	Billable          *bool                  `json:"billable,omitempty"`           // Whether or not the time entry is billable.
@@ -53,7 +54,7 @@ type ExternalReference struct {
 type TimeEntryList struct {
 	TimeEntries []*TimeEntry `json:"time_entries"`
 
-	Pagination
+	//Pagination
 }
 
 func (p TimeEntry) String() string {
@@ -71,8 +72,8 @@ type TimeEntryListOptions struct {
 	IsBilled     *bool      `json:"is_billed,omitempty"`     // Pass true to only return time entries that have been invoiced and false to return time entries that have not been invoiced.
 	IsRunning    *bool      `json:"is_running,omitempty"`    // Pass true to only return running time entries and false to return non-running time entries.
 	UpdatedSince *time.Time `json:"updated_since,omitempty"` // Only return time entries that have been updated since the given date and time.
-	From         *Date      `json:"from,omitempty"`          // Only return time entries with a spent_date on or after the given date.
-	To           *Date      `json:"to,omitempty"`            // Only return time entries with a spent_date on or before the given date.
+	From         string      `json:"from,omitempty"`          // Only return time entries with a spent_date on or after the given date.
+	To           string      `json:"to,omitempty"`            // Only return time entries with a spent_date on or before the given date.
 
 	ListOptions
 }
@@ -84,7 +85,7 @@ func (s *TimesheetService) List(ctx context.Context, opt *TimeEntryListOptions) 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", strings.ToLower(u), nil)
 	if err != nil {
 		return nil, nil, err
 	}
