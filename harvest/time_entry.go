@@ -54,7 +54,7 @@ type ExternalReference struct {
 type TimeEntryList struct {
 	TimeEntries []*TimeEntry `json:"time_entries"`
 
-	//Pagination
+	Pagination
 }
 
 func (p TimeEntry) String() string {
