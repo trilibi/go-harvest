@@ -19,10 +19,10 @@ type TimeEntry struct {
 	//SpentDate         *Date                  `json:"spent_date,omitempty"`         // Date of the time entry.
 	//User              *User                  `json:"user,omitempty"`               // An object containing the id and name of the associated user.
 	//UserAssignment    *ProjectUserAssignment `json:"user_assignment,omitempty"`    // A user assignment object of the associated user.
-	//Client            *Client                `json:"client,omitempty"`             // An object containing the id and name of the associated client.
-	//Project           *Project               `json:"project,omitempty"`            // An object containing the id and name of the associated project.
+	Client            *Client                `json:"client,omitempty"`             // An object containing the id and name of the associated client.
+	Project           *Project               `json:"project,omitempty"`            // An object containing the id and name of the associated project.
 	//Task              *Task                  `json:"task,omitempty"`               // An object containing the id and name of the associated task.
-	//TaskAssignment    *ProjectTaskAssignment `json:"task_assignment,omitempty"`    // A task assignment object of the associated task.
+	TaskAssignment    *ProjectTaskAssignment `json:"task_assignment,omitempty"`    // A task assignment object of the associated task.
 	//ExternalReference *ExternalReference     `json:"external_reference,omitempty"` // An object containing the id, group_id, permalink, service, and service_icon_url of the associated external reference.
 	//Invoice           *Invoice               `json:"invoice,omitempty"`            // Once the time entry has been invoiced, this field will include the associated invoice’s id and number.
 	Hours             *float64               `json:"hours,omitempty"`              // Number of (decimal time) hours tracked in this time entry.
